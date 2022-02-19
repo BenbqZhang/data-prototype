@@ -6,6 +6,7 @@ import pandas as pd
 import random
 
 random.seed(45)
+WINDOW_SIZE = 128
 # fake data to simulate collected real data
 LOC1_SAMPLE_NUM = int(1e4)
 LOC2_SAMPLE_NUM = int(1e4)+random.randint(100, 1000)
@@ -21,9 +22,24 @@ app = Dash(__name__)
 app.layout = html.Div([
     html.H1('Dash App for Time-series-data Annotation', id='app-title', style={'textAlign':'center'}),
 
-    dcc.Graph(id='loc1-sensor-graph', figure=px.line(loc1_sensor_df)),
-    dcc.Graph(id='loc2-sensor-graph', figure=px.line(loc2_sensor_df))
+    dcc.Graph(id='loc1-sensor-graph'),
+    dcc.Graph(id='loc2-sensor-graph'),
+    dcc.Slider(id='slide-window-slider', min=1, max=10, step=1, value=1),
 ])
+
+def create_window_figure(window_df):
+    return px.line(window_df)
+
+@app.callback(
+        Output('loc1-sensor-graph', 'figure'),
+        Output('loc2-sensor-graph', 'figure'),
+        Input('slide-window-slider', 'value')
+)
+def udpate_slide_window(slider_number):
+    start, end = (slider_number-1)*WINDOW_SIZE, slider_number*WINDOW_SIZE
+    loc1_window_df = loc1_sensor_df[start:end]
+    loc2_window_df = loc2_sensor_df[start:end]
+    return create_window_figure(loc1_window_df), create_window_figure(loc2_window_df)
 
 if __name__ == '__main__':
     app.run_server(debug=True)
