@@ -65,7 +65,8 @@ def udpate_slide_window(slider_number):
         Input('annotation-dropdown', 'value')
 )
 def update_current_window_label(label_value):
-    annotated_labels[current_window_number] = label_value
+    if label_value is not None:
+        annotated_labels[current_window_number] = label_value
     return ''
 
 @app.callback(
