@@ -72,11 +72,12 @@ def update_current_window_label(label_value):
         Output('hidden-div-2', 'children'),
         Input('show-annotation-btn', 'n_clicks')
 )
-def print_annotations(_):
+def print_annotations(n_clicks):
     """
     print annotation data under stdout.
     """
-    print(annotated_labels)
+    if n_clicks > 0:
+        print(annotated_labels)
     return ''
 
 if __name__ == '__main__':
