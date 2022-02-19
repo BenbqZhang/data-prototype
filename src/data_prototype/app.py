@@ -19,7 +19,10 @@ loc2_sensor_df = pd.DataFrame(np.random.randn(LOC2_SAMPLE_NUM, len(COLUMNS)), in
 app = Dash(__name__)
 
 app.layout = html.Div([
-    html.H1('Dash App for Time-series-data Annotation', id='app-title', style={'textAlign':'center'})
+    html.H1('Dash App for Time-series-data Annotation', id='app-title', style={'textAlign':'center'}),
+
+    dcc.Graph(id='loc1-sensor-graph', figure=px.line(loc1_sensor_df)),
+    dcc.Graph(id='loc2-sensor-graph', figure=px.line(loc2_sensor_df))
 ])
 
 if __name__ == '__main__':
