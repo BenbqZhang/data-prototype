@@ -37,7 +37,10 @@ app.layout = html.Div([
     dcc.Graph(id='loc2-sensor-graph'),
     dcc.Slider(id='slide-window-slider', min=1, max=10, step=1, value=1),
 
+    html.Button(id='show-annotation-btn', children='show annotation'),
+
     html.Div(id='hidden-div', style={'display' : 'none'}),
+    html.Div(id='hidden-div-2', style={'display' : 'none'}),
 ])
 
 def create_window_figure(window_df):
@@ -63,6 +66,17 @@ def udpate_slide_window(slider_number):
 )
 def update_current_window_label(label_value):
     annotated_labels[current_window_number] = label_value
+    return ''
+
+@app.callback(
+        Output('hidden-div-2', 'children'),
+        Input('show-annotation-btn', 'n_clicks')
+)
+def print_annotations(_):
+    """
+    print annotation data under stdout.
+    """
+    print(annotated_labels)
     return ''
 
 if __name__ == '__main__':
