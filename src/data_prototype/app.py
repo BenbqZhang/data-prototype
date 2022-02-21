@@ -1,4 +1,4 @@
-import demo.annotation as annotation
+from demo import sync
 
 if __name__ == '__main__':
-    annotation.app.run_server(debug=True)
+    sync.app.run_server(debug=True)
