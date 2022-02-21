@@ -63,6 +63,6 @@ def print_annotations(n_clicks):
     """
     print annotation data under stdout.
     """
-    if n_clicks > 0:
+    if n_clicks and n_clicks > 0:
         print(annotated_labels)
     return ''
