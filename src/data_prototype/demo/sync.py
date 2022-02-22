@@ -17,7 +17,9 @@ def create_figure(sensor_dataframe, time_index, window_size):
     see https://plotly.com/python-api-reference/generated/plotly.express.line.html
     """
     range_start, range_end = time_index[0], time_index[window_size-1]
-    return px.line(sensor_dataframe, range_x=[range_start, range_end])
+    fig = px.line(sensor_dataframe, range_x=[range_start, range_end])
+    fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across")
+    return fig
 
 app.layout = html.Div([
     html.P("sensor location 1:"),
