@@ -1,4 +1,4 @@
-from demo import sync
+from demo import display
 
 if __name__ == '__main__':
-    sync.app.run_server(debug=True)
+    display.app.run_server(debug=True)
