@@ -55,7 +55,8 @@ app.layout = html.Div([
 )
 def show_info(n_clicks):
     if n_clicks and n_clicks > 0:
-        print(loc1_current_xaxis_start, loc2_current_xaxis_start)
+        with open('dataset/processed_data/sync_index.txt', 'w') as f:
+            f.write(str(loc1_current_xaxis_start)+','+str(loc2_current_xaxis_start)+'\n')
 
 @app.callback(
         Output('loc1-x-axis-info', 'children'),
