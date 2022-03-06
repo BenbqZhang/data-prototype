@@ -1,4 +1,4 @@
-from demo import rangeslider
+from demo import rangeannote
 
 if __name__ == '__main__':
-    rangeslider.app.run_server(debug=True)
+    rangeannote.app.run_server(debug=True)
