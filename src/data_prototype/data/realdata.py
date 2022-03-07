@@ -36,4 +36,8 @@ def load_df_No2_loc14_fivemins():
     df = pd.read_csv('dataset/processed_data/D20210102-No2/loc14_fivemins.csv', index_col='ChipTime', parse_dates=True)
     return df
 
+def load_whole_loc1():
+    df = pd.read_csv('dataset/processed_data/realdataset/20210102/No1/loc1/D20210102_No1_loc1_acc_sync.csv', index_col='ChipTime', parse_dates=True)
+    return df
+
 WINDOW_SIZE=256

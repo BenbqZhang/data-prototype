@@ -1,11 +1,16 @@
 from dash import Dash, html, dcc, Input, Output
 import plotly.express as px
 
-from data import fakedata
+import math
+from data import realdata
 
 app = Dash(__name__)
 
-df = fakedata.loc1_sensor_df
+whole_df = realdata.load_whole_loc1()
+page_capacity = int(5*60*1000 / 10) # five minutes data per page
+line_num = len(whole_df.index)
+page_num = math.ceil(line_num/page_capacity)
+current_page = 0
 
 range_left, range_right = 0, 0
 annote_left, annote_right = 0, 0
@@ -45,6 +50,7 @@ app.layout = html.Div([
     dcc.Graph(id="loc1-graph"),
     html.P(id='current-range'),
     html.Div(id='hidden-div', style={'display' : 'none'}),
+    dcc.Slider(1, page_num, 1, value=1, id='page-slider'),
 ])
 
 def save_labels(file, labels):
@@ -73,19 +79,27 @@ def update_current_label(value):
     return ''
 
 left_clicks_old, right_clicks_old, submit_clicks_old = 0, 0, 0
-fig_backup = create_figure(df)
+fig_backup = create_figure(whole_df[0:page_capacity])
 
 @app.callback(
         Output('loc1-graph', 'figure'),
         Input('left-btn', 'n_clicks'),
         Input('right-btn', 'n_clicks'),
         Input('submit-btn', 'n_clicks'),
+        Input('page-slider', 'value'),
 )
-def update_annote(left_clicks, right_clicks, submit_clicks):
+def update_annote(left_clicks, right_clicks, submit_clicks, slider_value):
     global annote_left, annote_right
-    global left_clicks_old, right_clicks_old, submit_clicks_old
+    global left_clicks_old, right_clicks_old, submit_clicks_old, current_page
     global fig_backup
     fig = fig_backup
+
+    if slider_value != current_page:
+        current_page = slider_value
+        start = (current_page - 1) * page_capacity
+        end= current_page * page_capacity
+        df = whole_df[start:end]
+        fig = create_figure(df)
 
     if left_clicks and left_clicks > 0 and left_clicks != left_clicks_old:
         annote_left = range_left
@@ -105,7 +119,7 @@ def update_annote(left_clicks, right_clicks, submit_clicks):
 
     if submit_clicks and submit_clicks > 0 and submit_clicks != submit_clicks_old:
         annotated_labels.append((annote_left, annote_right, current_label))
-        save_labels('dataset/processed_data/annotation_result/fakedataano.txt', annotated_labels[-1])
+        save_labels('dataset/processed_data/annotation_result/loc1_realdata_anno.txt', annotated_labels[-1])
         fcolor = label_colors[current_label] if current_label in label_colors else 'black'
         fig.add_vrect(x0=annote_left, x1=annote_right,
                 annotation_text=current_label, annotation_position='top left',
