@@ -48,8 +48,9 @@ app.layout = html.Div([
 ])
 
 def save_labels(file, labels):
-    # not really write to file temporarily
-    print(labels)
+    labels_str = ','.join([str(lbl) for lbl in labels])
+    with open(file, 'a') as f:
+        f.write(labels_str + '\n')
 
 @app.callback(
         Output('current-range', 'children'),
@@ -104,7 +105,7 @@ def update_annote(left_clicks, right_clicks, submit_clicks):
 
     if submit_clicks and submit_clicks > 0 and submit_clicks != submit_clicks_old:
         annotated_labels.append((annote_left, annote_right, current_label))
-        save_labels('labels.txt', annotated_labels[-1])
+        save_labels('dataset/processed_data/annotation_result/fakedataano.txt', annotated_labels[-1])
         fcolor = label_colors[current_label] if current_label in label_colors else 'black'
         fig.add_vrect(x0=annote_left, x1=annote_right,
                 annotation_text=current_label, annotation_position='top left',
