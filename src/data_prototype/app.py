@@ -1,4 +1,4 @@
-from demo import rangeannote
+from demo import details
 
 if __name__ == '__main__':
-    rangeannote.app.run_server(debug=True)
+    details.app.run_server(debug=True)
