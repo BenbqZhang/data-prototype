@@ -1,4 +1,4 @@
-from demo import details
+from demo import sync_details
 
 if __name__ == '__main__':
-    details.app.run_server(debug=True)
+    sync_details.app.run_server(debug=True)
